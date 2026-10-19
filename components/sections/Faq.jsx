@@ -17,7 +17,7 @@ export default function Faq() {
             <p className="mt-2.5 text-muted">{i.a}</p>
           </details>
         ))}
-        <CenterCta />
+        <CenterCta text={f.cta} />
       </div>
     </section>
   );

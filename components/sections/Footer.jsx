@@ -1,16 +1,27 @@
 import { CONFIG as C } from "@/lib/siteConfig";
 import { wrap } from "@/components/ui/classes";
 
-export default function Footer() {
+// base: prefix for the in-page quick links when the footer is used on another page (e.g. "/with-map")
+export default function Footer({ base = "" }) {
   const h4 = "font-bold text-white mb-2.5";
   return (
     <footer className="bg-[#0b1220] text-[#cbd5e1] pt-10 pb-6 text-[14px]">
       <div className={wrap}>
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-7 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-7 mb-6">
           <div>
             <h4 className={h4}>{C.clinic.name}</h4>
             <p>{C.footer.about}</p>
             <p className="mt-2.5">📍 {C.clinic.address}</p>
+          </div>
+          <div>
+            <h4 className={h4}>Quick Links</h4>
+            {C.footer.quickLinks.map(([label, href]) => (
+              <p key={label}>
+                <a className="hover:text-white" href={`${base}${href}`}>
+                  {label}
+                </a>
+              </p>
+            ))}
           </div>
           <div>
             <h4 className={h4}>Contact</h4>
@@ -20,7 +31,6 @@ export default function Footer() {
               </a>
             </p>
             {C.clinic.email && <p>{C.clinic.email}</p>}
-            <p>{C.clinic.hours}</p>
           </div>
           <div>
             <h4 className={h4}>Legal</h4>

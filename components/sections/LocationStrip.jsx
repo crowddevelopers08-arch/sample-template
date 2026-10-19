@@ -10,7 +10,7 @@ export default function LocationStrip() {
       <div className={item}>
         <span className="text-[22px] w-7 shrink-0 text-center">📍</span>
         <div>
-          <b className={label}>Visit Us</b>
+          <b className={label}>Address</b>
           <a className="text-white" href={C.clinic.mapLink} target="_blank" rel="noopener">
             {C.clinic.address}
           </a>
@@ -19,7 +19,7 @@ export default function LocationStrip() {
       <div className={item}>
         <span className="text-[22px] w-7 shrink-0 text-center">📞</span>
         <div>
-          <b className={label}>Call</b>
+          <b className={label}>Phone</b>
           <a className="text-white" href={`tel:${C.clinic.phone}`} data-call="1">
             {C.clinic.phoneDisplay}
           </a>
@@ -28,13 +28,20 @@ export default function LocationStrip() {
       <div className={item}>
         <span className="text-[22px] w-7 shrink-0 text-center">🕒</span>
         <div>
-          <b className={label}>Hours</b>
+          <b className={label}>Clinic Hours</b>
           {C.clinic.hours}
+        </div>
+      </div>
+      <div className={item}>
+        <span className="text-[22px] w-7 shrink-0 text-center">🩺</span>
+        <div>
+          <b className={label}>Consulting Hours</b>
+          {C.clinic.consultingHours}
         </div>
       </div>
       <div className="flex gap-2.5 flex-wrap justify-center w-full">
         <a href={`tel:${C.clinic.phone}`} data-call="1" className={`${ctaBtn} ${btnPrimary}`}>
-          📞 Call Now
+          📞 Call Now&nbsp;→
         </a>
         <a
           href={C.clinic.mapLink}
@@ -42,7 +49,7 @@ export default function LocationStrip() {
           rel="noopener"
           className={`${ctaBtn} bg-transparent text-white border-2 border-white`}
         >
-          Get Directions →
+          Get Directions&nbsp;→
         </a>
       </div>
     </div>

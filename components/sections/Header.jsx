@@ -1,5 +1,6 @@
 import { CONFIG as C } from "@/lib/siteConfig";
 import { btn, btnGhost, btnPrimary, wrap } from "@/components/ui/classes";
+import Logo from "@/components/ui/Logo";
 
 export default function Header() {
   const nav = [
@@ -16,9 +17,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-line">
       <div className={`${wrap} flex items-center justify-between h-[62px] gap-3`}>
-        <a href="#top" className="font-head font-extrabold text-[20px] text-brand flex items-center gap-2">
-          {C.clinic.logo ? <img src={C.clinic.logo} alt={C.clinic.name} className="h-10 w-auto" /> : C.clinic.name}
-        </a>
+        <Logo />
         <nav className="hidden lg:flex gap-[22px] font-semibold text-[14px] text-muted">
           {nav.map(([id, label]) => (
             <a key={id} href={`#${id}`}>

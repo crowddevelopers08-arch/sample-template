@@ -18,7 +18,7 @@ export default function WhyUs() {
             </div>
           ))}
         </div>
-        <CenterCta />
+        <CenterCta text={w.cta} />
       </div>
     </section>
   );

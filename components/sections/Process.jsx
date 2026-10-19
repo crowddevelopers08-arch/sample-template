@@ -11,16 +11,19 @@ export default function Process() {
         <SectionHead eyebrow={p.eyebrow} title={p.title} sub={p.sub} />
         <div className={grid4}>
           {p.steps.map((s, i) => (
-            <div key={s.title} className="relative pt-2">
-              <div className="w-[42px] h-[42px] rounded-full bg-brand text-white grid place-items-center font-extrabold mb-3">
+            // mobile: number and title side by side in one row; sm+: number above title
+            <div key={s.title} className="relative pt-2 flex items-center gap-3.5 sm:block">
+              <div className="shrink-0 w-[42px] h-[42px] rounded-full bg-brand text-white grid place-items-center font-extrabold sm:mb-3">
                 {i + 1}
               </div>
-              <h3 className={h3}>{s.title}</h3>
-              <p className="text-muted text-[15px]">{s.text}</p>
+              <div>
+                <h3 className={h3}>{s.title}</h3>
+                {s.text && <p className="text-muted text-[15px]">{s.text}</p>}
+              </div>
             </div>
           ))}
         </div>
-        <CenterCta />
+        <CenterCta text={p.cta} />
       </div>
     </section>
   );

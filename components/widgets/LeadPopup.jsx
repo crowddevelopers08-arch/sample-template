@@ -39,12 +39,12 @@ export default function LeadPopup() {
     };
 
     const timer = setTimeout(
-      () => open(POP.timerTitle || "Book Free Consultation", POP.timerKicker, "pop_timer"),
+      () => open(POP.timerTitle || C.form.title, POP.timerKicker, "pop_timer"),
       (POP.delaySeconds ?? 20) * 1000
     );
     const t0 = Date.now();
     const exit = () =>
-      Date.now() - t0 < 5000 ? 0 : open(POP.exitTitle || "Wait! Get a Free Consultation", POP.exitKicker || "Before you go", "pop_exit");
+      Date.now() - t0 < 5000 ? 0 : open(POP.exitTitle || C.form.title, POP.exitKicker, "pop_exit");
 
     const onLeave = (e) => { if (e.clientY <= 0) exit(); }; // desktop: cursor leaves toward tab bar
     const onKey = (e) => { if (e.key === "Escape") close(); };

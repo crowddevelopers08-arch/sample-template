@@ -19,7 +19,7 @@ export default function Offer() {
               {o.price}
             </div>
             <a href="#book" data-cta="" className={`${btn} ${btnLg} ${btnPrimary} mt-3`}>
-              {o.cta} →
+              {`${o.cta} →`}
             </a>
           </div>
         </div>

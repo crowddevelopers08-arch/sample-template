@@ -24,12 +24,12 @@ export default function Testimonials() {
               <div className="text-[#f59e0b] tracking-[2px]">★★★★★</div>
               <p className="italic text-ink text-[15px] mt-1.5">“{r.text}”</p>
               <div className="mt-3 text-[14px] text-muted">
-                <b>{r.name}</b> • {r.meta} • <span className="text-brand">Verified</span>
+                <b>{r.name}</b> • {r.meta}
               </div>
             </div>
           ))}
         </div>
-        <CenterCta />
+        <CenterCta text={t.cta} />
       </div>
     </section>
   );

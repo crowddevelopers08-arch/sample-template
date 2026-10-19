@@ -18,8 +18,9 @@ export const grid4 = "grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
 
 // buttons: base + size + variant (kept separate so sizes never conflict)
 export const btn =
-  "inline-flex items-center justify-center gap-2 rounded-full font-bold cursor-pointer transition-all duration-200";
-export const btnLg = "px-[26px] py-[14px] text-[16px]";
+  "inline-flex items-center justify-center gap-2 rounded-full font-bold cursor-pointer transition-all duration-200 text-center leading-[1.3] max-w-full";
+// smaller on phones so long CTA labels fit on one or two balanced lines
+export const btnLg = "px-5 py-3 text-[15px] sm:px-[26px] sm:py-[14px] sm:text-[16px] [text-wrap:balance]";
 export const btnPrimary =
   "bg-accent text-[#1a1200] shadow-[0_4px_14px_rgba(255,210,31,.45)] hover:bg-accent-dark hover:text-black hover:-translate-y-px";
 export const btnBrand = "bg-brand text-white hover:bg-brand-dark";

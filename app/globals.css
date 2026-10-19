@@ -19,6 +19,14 @@
 
   --animate-fade: fade 0.25s;
   --animate-pop: pop 0.3s;
+  --animate-letter: letter 5s ease-out infinite both;
+
+  /* header wordmark: letters type in one by one, hold, then fade out and repeat */
+  @keyframes letter {
+    0% { opacity: 0; transform: translateY(6px); }
+    8%, 80% { opacity: 1; transform: none; }
+    92%, 100% { opacity: 0; transform: none; }
+  }
 
   @keyframes fade {
     from { opacity: 0; }
@@ -33,6 +41,10 @@
 @theme inline {
   --font-body: var(--font-poppins), Arial, sans-serif;
   --font-head: var(--font-poppins), "Inter", sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-letter { animation: none; }
 }
 
 html {

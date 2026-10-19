@@ -9,7 +9,7 @@ export default function MapEmbed() {
       <iframe
         src={src}
         loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
+        referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
         title="Clinic location map"
         className="absolute inset-0 w-full h-full border-0"
