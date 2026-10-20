@@ -1,7 +1,7 @@
 import { CONFIG as C } from "@/lib/siteConfig";
 import { wrap } from "@/components/ui/classes";
 
-// base: prefix for the in-page quick links when the footer is used on another page (e.g. "/with-map")
+// base: prefix for the in-page quick links when the footer is used on another page (e.g. "/" from the legal pages)
 export default function Footer({ base = "" }) {
   const h4 = "font-bold text-white mb-2.5";
   return (

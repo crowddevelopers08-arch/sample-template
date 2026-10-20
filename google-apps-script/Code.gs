@@ -1,15 +1,24 @@
 /* ============================================================
-   The Physiora - LP Leads - Google Apps Script
+   The Physiora - LP Leads & Patient Feedback - Google Apps Script
 
    Paste into Extensions → Apps Script of the target spreadsheet, then
    Deploy → New deployment → Web app (Execute as: Me, Access: Anyone).
    The /exec URL goes in GOOGLE_SHEETS_WEBHOOK_URL (.env.local and the
    hosting provider's environment variables).
 
-   Accepts payloads from app/api/lead/route.js (the booking form):
+   Updating an existing deployment (keeps the same /exec URL):
+   Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy.
 
-     action: "lead"
-       { timestamp, name, phone, concern }   → new row
+   Accepts two payloads, each written to its own tab:
+
+     action: "lead"       (app/api/lead/route.js — booking form)
+       { timestamp, name, phone, concern }                          → "Physiora LP Leads"
+
+     action: "feedback"   (app/api/feedback/route.js — /client-feedback, 1–3 star ratings)
+       { timestamp, name, email, phone, rating, suggestions, pageUrl } → "Physiora Feedback"
+
+   Both tabs are created automatically on the first submission (or run
+   setupSheets() once). Only the leads tab is synced to Meta.
 
    Columns are exactly the form's fields (plus Timestamp). Rows are written
    by header name instead of fixed column position so the tab can tolerate
@@ -33,7 +42,11 @@
 var LEAD_HEADERS = ['Timestamp', 'Name', 'Phone', 'Concern'];
 var LEAD_WIDTHS = [190, 220, 170, 240];
 
+var FEEDBACK_HEADERS = ['Timestamp', 'Name', 'Email', 'Phone', 'Rating', 'Suggestions', 'Page URL'];
+var FEEDBACK_WIDTHS = [190, 200, 240, 160, 90, 420, 280];
+
 var DEFAULT_TAB = 'Physiora LP Leads';
+var FEEDBACK_TAB = 'Physiora Feedback';
 var DEFAULT_HEADER_COLOR = '#853f91';
 
 function authorize() {
@@ -53,8 +66,9 @@ function doPost(e) {
     }
 
     var data = JSON.parse(e.postData.contents);
-    if (data.action && data.action !== 'lead') {
-      return _json({ error: 'Unknown action: ' + data.action });
+    var action = data.action || 'lead';
+    if (action !== 'lead' && action !== 'feedback') {
+      return _json({ error: 'Unknown action: ' + action });
     }
 
     // Serialise writes with the Meta sync so it never reads a half-written row.
@@ -62,10 +76,16 @@ function doPost(e) {
 
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var ts = data.timestamp || new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
+    if (action === 'feedback') {
+      var fbRow = appendFeedbackRow(getOrCreateFeedbackSheet(ss), data, ts);
+      return _json({ success: true, tab: FEEDBACK_TAB, action: action, row: fbRow });
+    }
+
     var sheet = getOrCreateLeadSheet(ss, DEFAULT_TAB);
     var row = appendLeadRow(sheet, data, ts);
 
-    return _json({ success: true, tab: DEFAULT_TAB, action: 'lead', row: row });
+    return _json({ success: true, tab: DEFAULT_TAB, action: action, row: row });
   } catch (err) {
     return _json({ error: err.toString() });
   } finally {
@@ -83,6 +103,15 @@ function setupSheets() {
   } else {
     _ensureHeaders(sheet, LEAD_HEADERS, DEFAULT_HEADER_COLOR);
     Logger.log('OK: ' + DEFAULT_TAB);
+  }
+
+  var feedback = ss.getSheetByName(FEEDBACK_TAB);
+  if (!feedback) {
+    createFeedbackSheet(ss);
+    Logger.log('Created: ' + FEEDBACK_TAB);
+  } else {
+    _ensureHeaders(feedback, FEEDBACK_HEADERS, DEFAULT_HEADER_COLOR);
+    Logger.log('OK: ' + FEEDBACK_TAB);
   }
 
   Logger.log('setupSheets complete.');
@@ -186,18 +215,30 @@ function _phone(raw) {
 
 /* ── Sheet setup ─────────────────────────────────────────────── */
 
-function createLeadSheet(ss, tabName) {
+function _createSheet(ss, tabName, headers, widths) {
   var sheet = ss.insertSheet(tabName);
-  sheet.appendRow(LEAD_HEADERS);
-  _styleHeader(sheet, LEAD_HEADERS.length, DEFAULT_HEADER_COLOR);
-  _setWidths(sheet, LEAD_WIDTHS);
+  sheet.appendRow(headers);
+  _styleHeader(sheet, headers.length, DEFAULT_HEADER_COLOR);
+  _setWidths(sheet, widths);
   sheet.setFrozenRows(1);
-  _addFilter(sheet, LEAD_HEADERS.length);
+  _addFilter(sheet, headers.length);
   return sheet;
+}
+
+function createLeadSheet(ss, tabName) {
+  return _createSheet(ss, tabName, LEAD_HEADERS, LEAD_WIDTHS);
 }
 
 function getOrCreateLeadSheet(ss, tabName) {
   return ss.getSheetByName(tabName) || createLeadSheet(ss, tabName);
+}
+
+function createFeedbackSheet(ss) {
+  return _createSheet(ss, FEEDBACK_TAB, FEEDBACK_HEADERS, FEEDBACK_WIDTHS);
+}
+
+function getOrCreateFeedbackSheet(ss) {
+  return ss.getSheetByName(FEEDBACK_TAB) || createFeedbackSheet(ss);
 }
 
 /* ── Actions ─────────────────────────────────────────────────── */
@@ -211,6 +252,28 @@ function appendLeadRow(sheet, data, ts) {
   }, LEAD_HEADERS, DEFAULT_HEADER_COLOR);
 
   _centerColumns(sheet, result.headers, result.row, ['Phone']);
+  return result.row;
+}
+
+function appendFeedbackRow(sheet, data, ts) {
+  var rating = Number(data.rating);
+  var result = _appendByHeaders(sheet, {
+    'Timestamp': ts,
+    'Name': data.name || '',
+    'Email': data.email || '',
+    'Phone': _phone(data.phone),
+    'Rating': rating >= 1 && rating <= 5 ? rating + ' / 5' : '',
+    'Suggestions': data.suggestions || '',
+    'Page URL': data.pageUrl || ''
+  }, FEEDBACK_HEADERS, DEFAULT_HEADER_COLOR);
+
+  _centerColumns(sheet, result.headers, result.row, ['Phone', 'Rating']);
+  // Long suggestions wrap instead of spilling over; the row grows to fit.
+  var sIdx = result.headers.indexOf('Suggestions');
+  if (sIdx !== -1) {
+    sheet.getRange(result.row, sIdx + 1).setWrap(true);
+    sheet.autoResizeRows(result.row, 1);
+  }
   return result.row;
 }
 

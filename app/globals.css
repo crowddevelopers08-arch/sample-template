@@ -20,6 +20,12 @@
   --animate-fade: fade 0.25s;
   --animate-pop: pop 0.3s;
   --animate-letter: letter 5s ease-out infinite both;
+  --animate-scale-in: scale-in 0.6s ease-out forwards;
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
 
   /* header wordmark: letters type in one by one, hold, then fade out and repeat */
   @keyframes letter {
@@ -44,8 +50,57 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-letter { animation: none; }
+  .animate-letter, .animate-scale-in { animation: none; }
 }
+
+/* ============ Review & feedback pages (/review, /client-feedback) ============ */
+.review {
+  --r-ink: #212529;
+  --r-muted: #5f5566;
+  --r-line: #eadcee;
+  --r-paper: #f8f1f9; /* card */
+  --r-canvas: #fdfafd; /* inputs, star tiles */
+  --r-brand: #853f91;
+  --r-brand-deep: #4a2152; /* page backdrop, headings */
+  --r-brand-soft: #f1e3f4;
+  --r-star: #f5b400;
+  --r-star-deep: #7a5800;
+  --r-star-soft: #fff5d6;
+  --r-star-line: #f1d98c;
+  font-family: var(--font-lato), Arial, sans-serif;
+  color: var(--r-ink);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+.review h1 { font-weight: 700; letter-spacing: -0.025em; }
+.review :focus-visible { outline: 2px solid var(--r-brand); outline-offset: 3px; border-radius: 4px; }
+.review .r-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  font-size: clamp(0.9375rem, 0.9rem + 0.16vw, 1rem);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.25s, background 0.25s, color 0.2s, border-color 0.2s;
+}
+.review .r-btn-primary { background: var(--r-brand); color: #fff; box-shadow: 0 12px 28px -12px rgb(133 63 145 / 0.5); }
+.review .r-btn-primary:hover:not(:disabled) {
+  background: var(--r-brand-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -14px rgb(133 63 145 / 0.6);
+}
+.review .r-btn-ghost { background: #fff; color: var(--r-ink); border-color: var(--r-line); }
+.review .r-btn-ghost:hover { border-color: var(--r-brand); color: var(--r-brand-deep); transform: translateY(-2px); }
+
+/* the body's bottom padding is room for the landing pages' sticky bar, which these pages don't have */
+body:has(.review) { padding-bottom: 0; }
 
 html {
   scroll-behavior: smooth;

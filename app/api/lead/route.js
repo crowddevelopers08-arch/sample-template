@@ -1,11 +1,12 @@
 import { CONFIG as C } from "@/lib/siteConfig";
+import { istNow, postToSheet } from "@/lib/sheets";
 
 // Booking form → Google Apps Script web app (google-apps-script/Code.gs) → "Physiora LP Leads" tab.
-// The /exec URL lives in GOOGLE_SHEETS_WEBHOOK_URL (.env.local / hosting env vars), never in the browser.
 
 export async function POST(req) {
-  const url = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-  if (!url) return Response.json({ error: "Lead capture is not configured" }, { status: 500 });
+  if (!process.env.GOOGLE_SHEETS_WEBHOOK_URL) {
+    return Response.json({ error: "Lead capture is not configured" }, { status: 500 });
+  }
 
   let body;
   try {
@@ -23,24 +24,8 @@ export async function POST(req) {
     return Response.json({ error: "Please enter your name, a valid 10-digit mobile number and concern." }, { status: 400 });
   }
 
-  const payload = {
-    action: "lead",
-    timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-    name,
-    phone: `+91${phone}`,
-    concern,
-  };
-
   try {
-    // Apps Script answers with a 302 to googleusercontent.com; fetch follows it and returns the JSON.
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      cache: "no-store",
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok || !json.success) throw new Error(json.error || `Sheets HTTP ${res.status}`);
+    await postToSheet({ action: "lead", timestamp: istNow(), name, phone: `+91${phone}`, concern });
     return Response.json({ success: true });
   } catch (err) {
     console.error("Lead webhook failed:", err);
