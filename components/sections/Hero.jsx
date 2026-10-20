@@ -13,7 +13,12 @@ export default function Hero() {
       <section className="bg-[linear-gradient(135deg,var(--color-soft),#fff_60%)] pt-10 pb-14">
         <div className={`${wrap} grid grid-cols-1 lg:grid-cols-[1.1fr_.9fr] gap-9 items-center`}>
           <div>
-            {h.eyebrow && <span className={`${eyebrow} block`}>{h.eyebrow}</span>}
+            {h.eyebrow && (
+              <span
+                className={`${eyebrow} block [&_b]:text-[17px] sm:[&_b]:text-[20px] [&_b]:font-extrabold [&_b]:text-brand-dark [&_b]:whitespace-nowrap`}
+                dangerouslySetInnerHTML={{ __html: h.eyebrow }}
+              />
+            )}
             {h.badge && (
               <span
                 className="inline-block bg-white border border-line px-3.5 py-1.5 rounded-full text-[13px] font-semibold text-brand mb-3.5"
