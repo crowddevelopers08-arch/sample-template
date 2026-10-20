@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import { CONFIG as C } from "@/lib/siteConfig";
-import { Star } from "./icons";
+import { Annoyed, Frown, Laugh, Meh, Smile, Star } from "lucide-react";
 
-const FACES = ["😌", "😞", "😕", "😐", "🙂", "😍"]; // index = rating; 0 = nothing picked yet
+const FACES = [Smile, Frown, Annoyed, Meh, Smile, Laugh]; // index = rating; 0 = nothing picked yet
 
 // 4–5 stars → Google review page; 1–3 stars → private feedback form (/client-feedback)
 export default function RatingPicker() {
   const [hover, setHover] = useState(0);
   const [picked, setPicked] = useState(0);
   const shown = picked || hover;
+  const Face = FACES[shown];
   const { positiveMin } = C.review;
 
   function pick(n) {
@@ -24,8 +25,8 @@ export default function RatingPicker() {
   return (
     <div className="mt-7 flex flex-col items-center">
       <div className="flex h-[72px] w-[72px] items-center justify-center rounded-[22px] border border-[var(--r-line)] bg-[var(--r-canvas)] sm:h-20 sm:w-20">
-        <span key={shown} aria-hidden="true" className="animate-scale-in text-[2.1rem] leading-none sm:text-[2.4rem]">
-          {FACES[shown]}
+        <span key={shown} aria-hidden="true" className="animate-scale-in text-[var(--r-brand)]">
+          <Face className="h-9 w-9 sm:h-10 sm:w-10" strokeWidth={1.75} />
         </span>
       </div>
       <h1 className="mt-6 text-center text-[clamp(1.65rem,5.6vw,2.1rem)] leading-tight text-[var(--r-brand-deep)]">

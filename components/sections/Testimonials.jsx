@@ -2,6 +2,7 @@ import { CONFIG as C } from "@/lib/siteConfig";
 import { card, grid3, section, wrap } from "@/components/ui/classes";
 import SectionHead from "@/components/ui/SectionHead";
 import CenterCta from "@/components/ui/CenterCta";
+import { Star } from "lucide-react";
 
 export default function Testimonials() {
   const t = C.testimonials;
@@ -21,7 +22,11 @@ export default function Testimonials() {
         <div className={grid3}>
           {t.reviews.map((r) => (
             <div key={r.name} className={card}>
-              <div className="text-[#f59e0b] tracking-[2px]">★★★★★</div>
+              <div className="flex gap-0.5 text-[#f59e0b]" role="img" aria-label="5 out of 5 stars">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <Star key={n} className="h-4 w-4 fill-current" aria-hidden="true" />
+                ))}
+              </div>
               <p className="italic text-ink text-[15px] mt-1.5">“{r.text}”</p>
               <div className="mt-3 text-[14px] text-muted">
                 <b>{r.name}</b> • {r.meta}

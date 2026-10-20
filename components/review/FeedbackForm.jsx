@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CONFIG as C } from "@/lib/siteConfig";
-import { ArrowLeft, CircleCheck, Star } from "./icons";
+import { ArrowLeft, CircleCheck, Star } from "lucide-react";
 
 const EMPTY = { name: "", email: "", phone: "", suggestions: "" };
 

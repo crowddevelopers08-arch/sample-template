@@ -1,5 +1,6 @@
 import { CONFIG as C } from "@/lib/siteConfig";
 import { btn, btnBrand, btnLg, card, eyebrow, h2, h3, section, wrap } from "@/components/ui/classes";
+import { UserRound } from "lucide-react";
 import Ticks from "@/components/ui/Ticks";
 
 export default function Doctor() {
@@ -12,7 +13,9 @@ export default function Doctor() {
       className="rounded-[16px] w-full aspect-[4/5] object-cover bg-soft"
     />
   ) : (
-    <div className={`${card} aspect-[4/5] grid place-items-center text-[64px]`}>👨‍⚕️</div>
+    <div className={`${card} aspect-[4/5] grid place-items-center text-brand`}>
+      <UserRound className="h-16 w-16" strokeWidth={1.5} aria-hidden="true" />
+    </div>
   );
   return (
     <section className={`${section} bg-soft`} id="doctor">

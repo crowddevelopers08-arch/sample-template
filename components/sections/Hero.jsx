@@ -1,5 +1,6 @@
 import { CONFIG as C } from "@/lib/siteConfig";
 import { btn, btnGhost, btnLg, btnPrimary, eyebrow, wrap } from "@/components/ui/classes";
+import { Phone } from "lucide-react";
 import Ticks from "@/components/ui/Ticks";
 import LeadForm from "@/components/ui/LeadForm";
 import Banner from "./Banner";
@@ -30,7 +31,8 @@ export default function Hero() {
                 {`${h.primaryCta} →`}
               </a>
               <a href={`tel:${C.clinic.phone}`} data-call="1" className={`${btn} ${btnLg} ${btnGhost} w-full xs:w-auto`}>
-                {`📞 ${h.secondaryCta}`}
+                <Phone className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+                {h.secondaryCta}
               </a>
             </div>
             {h.image && (

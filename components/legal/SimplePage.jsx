@@ -1,5 +1,6 @@
 import { CONFIG as C } from "@/lib/siteConfig";
 import { btn, btnPrimary, wrap } from "@/components/ui/classes";
+import { Phone } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import Footer from "@/components/sections/Footer";
 
@@ -9,10 +10,11 @@ export default function SimplePage({ children }) {
   return (
     <>
       <header className="sticky top-0 z-50 bg-white border-b border-line">
-        <div className={`${wrap} flex items-center justify-between h-[62px] gap-3`}>
+        <div className={`${wrap} flex items-center justify-between h-[72px] lg:h-[84px] gap-3`}>
           <Logo href={home} />
           <a className={`${btn} ${btnPrimary} px-4 py-[9px] text-[14px]`} href={`tel:${C.clinic.phone}`} data-call="1">
-            📞 Call
+            <Phone className="h-4 w-4" aria-hidden="true" />
+            Call
           </a>
         </div>
       </header>

@@ -1,7 +1,13 @@
 import { CONFIG as C } from "@/lib/siteConfig";
 
 // Logo icon + wordmark: each letter fades in one by one, coloured pink → coral like the brand logo
-export default function Logo({ href = "#top", animated = true, large = false }) {
+const SIZES = {
+  md: { wrap: "text-[19px] sm:text-[26px] gap-2", img: "h-12 sm:h-14 w-auto" }, // site header
+  lg: { wrap: "text-[24px] sm:text-[30px] gap-2.5", img: "h-14 sm:h-16 w-auto" }, // review pages
+};
+
+export default function Logo({ href = "#top", animated = true, size = "md" }) {
+  const s = SIZES[size];
   const word = C.clinic.name.toUpperCase();
   const from = [230, 23, 143];
   const to = [245, 100, 90];
@@ -12,11 +18,9 @@ export default function Logo({ href = "#top", animated = true, large = false }) 
     <a
       href={href}
       aria-label={C.clinic.name}
-      className={`font-head font-semibold flex items-center ${
-        large ? "text-[24px] sm:text-[30px] gap-2.5" : "text-[17px] sm:text-[22px] gap-2"
-      }`}
+      className={`font-head font-semibold flex items-center shrink-0 ${s.wrap}`}
     >
-      {C.clinic.logo && <img src={C.clinic.logo} alt="" className={large ? "h-14 sm:h-16 w-auto" : "h-10 w-auto"} />}
+      {C.clinic.logo && <img src={C.clinic.logo} alt="" className={s.img} />}
       <span aria-hidden="true" className="whitespace-nowrap tracking-[.02em]">
         {[...word].map((ch, i) => (
           <span

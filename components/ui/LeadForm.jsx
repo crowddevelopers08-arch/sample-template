@@ -41,7 +41,7 @@ export default function LeadForm({ id, title, kicker, modal = false }) {
         location.href = C.tracking.thankYouUrl;
         return;
       }
-      setMsg({ color: "#15803d", text: "✅ Thank you! Our team will call you shortly." });
+      setMsg({ color: "#15803d", text: "Thank you! Our team will call you shortly." });
       window.dispatchEvent(new Event("lead:done")); // closes the popup after 2.2s
     } catch (err) {
       setMsg({ color: "#b91c1c", text: err?.message || "Something went wrong. Please call us directly." });

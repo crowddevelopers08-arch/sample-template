@@ -11,7 +11,7 @@ export const eyebrow = "inline-block text-brand font-bold text-[13px] tracking-[
 export const card =
   "bg-white border border-line rounded-[16px] p-[22px] shadow-[0_10px_30px_rgba(15,23,42,.08)]";
 export const cardText = "text-muted text-[15px] mt-1.5";
-export const icon = "w-[46px] h-[46px] rounded-xl bg-soft grid place-items-center text-[22px] mb-3";
+export const icon = "w-[46px] h-[46px] rounded-xl bg-soft grid place-items-center text-brand mb-3";
 
 export const grid3 = "grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 export const grid4 = "grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";

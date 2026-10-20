@@ -104,5 +104,5 @@ body:has(.review) { padding-bottom: 0; }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 70px;
+  scroll-padding-top: 92px; /* sticky header (72px / 84px on desktop) + breathing room */
 }

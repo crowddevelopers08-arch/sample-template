@@ -17,7 +17,7 @@ export default function ReviewShell({ wide = false, children }) {
         }`}
       >
         <div className={`flex justify-center ${wide ? "mb-5 sm:mb-7" : ""}`}>
-          <Logo href={C.clinic.homeUrl} animated={false} large />
+          <Logo href={C.clinic.homeUrl} animated={false} size="lg" />
         </div>
         {children}
       </div>

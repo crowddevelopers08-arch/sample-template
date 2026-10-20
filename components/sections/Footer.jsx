@@ -1,3 +1,4 @@
+import { MapPin } from "lucide-react";
 import { CONFIG as C } from "@/lib/siteConfig";
 import { wrap } from "@/components/ui/classes";
 
@@ -11,7 +12,10 @@ export default function Footer({ base = "" }) {
           <div>
             <h4 className={h4}>{C.clinic.name}</h4>
             <p>{C.footer.about}</p>
-            <p className="mt-2.5">📍 {C.clinic.address}</p>
+            <p className="mt-2.5 flex items-start gap-1.5">
+              <MapPin className="h-4 w-4 mt-[3px] shrink-0" aria-hidden="true" />
+              {C.clinic.address}
+            </p>
           </div>
           <div>
             <h4 className={h4}>Quick Links</h4>

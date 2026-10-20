@@ -14,6 +14,8 @@ export default function MapEmbed() {
         title="Clinic location map"
         className="absolute inset-0 w-full h-full border-0"
       />
+      {/* clicks on the map go to the booking form beside it, not to Google Maps */}
+      <a href="#form2" data-cta="" aria-label="Book your free consultation" className="absolute inset-0 z-10" />
     </div>
   );
 }
