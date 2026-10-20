@@ -7,7 +7,7 @@ import { btn, btnLg, btnPrimary } from "./classes";
 const field =
   "w-full px-3.5 py-[13px] border border-[#cbd5e1] rounded-[10px] bg-white placeholder:text-[#757575] focus:outline-2 focus:outline-brand focus:border-transparent";
 
-// Lead goes to /api/lead → Google Sheet (see google-apps-script/Code.gs). Only name, phone and concern are sent.
+// Lead goes to /api/lead → Google Sheet (see google-apps-script/Code.gs) + TeleCRM. Sends name, phone, concern and the page URL.
 export default function LeadForm({ id, title, kicker, modal = false }) {
   const [msg, setMsg] = useState({ text: "", color: "" });
   const [busy, setBusy] = useState(false);
@@ -27,7 +27,13 @@ export default function LeadForm({ id, title, kicker, modal = false }) {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: d.name, phone: d.phone, concern: d.concern, company: d.company }),
+        body: JSON.stringify({
+          name: d.name,
+          phone: d.phone,
+          concern: d.concern,
+          company: d.company,
+          pageUrl: location.href,
+        }),
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok || !json.success) throw new Error(json.error);

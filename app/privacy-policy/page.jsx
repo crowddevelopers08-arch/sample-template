@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
   const c = C.clinic;
   return (
     <SimplePage>
-      <LegalBody title="Privacy Policy" updated="October 19, 2026">
+      <LegalBody title="Privacy Policy" updated="October 20, 2026">
         <p>
           {c.name} (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) respects your privacy. This policy explains what
           personal information we collect through this website, how we use it, and the choices you have.
@@ -18,6 +18,9 @@ export default function PrivacyPolicy() {
         <ul>
           <li>Your name and mobile number</li>
           <li>The health concern or condition you select or describe</li>
+          <li>
+            If you rate your visit or share feedback: your rating, email address, and the suggestions you write
+          </li>
           <li>Any other details you choose to share with us by phone, WhatsApp, or email</li>
         </ul>
         <p>
@@ -31,6 +34,7 @@ export default function PrivacyPolicy() {
           <li>To contact you about your enquiry and schedule a consultation</li>
           <li>To understand your condition before your appointment</li>
           <li>To send appointment-related reminders or updates</li>
+          <li>To review your feedback, follow up with you about it, and improve our care</li>
           <li>To measure and improve our website and advertising</li>
           <li>To comply with applicable legal obligations</li>
         </ul>
@@ -47,11 +51,20 @@ export default function PrivacyPolicy() {
           visits and measure the performance of our advertisements. You can block or delete cookies through your browser
           settings.
         </p>
+        <p>
+          If you submit a consultation request, we may share your mobile number and name with Meta (Facebook and
+          Instagram) in an encrypted (hashed) form, so that our advertisements can reach similar audiences and avoid
+          showing you ads you no longer need. Feedback and ratings are not used for advertising.
+        </p>
 
         <h2>5. Sharing Your Information</h2>
         <p>We do not sell your personal information. We may share it only:</p>
         <ul>
-          <li>With service providers who help us operate this website, communication tools, or appointment scheduling</li>
+          <li>
+            With service providers who help us operate this website, store and manage enquiries (such as Google
+            Workspace and our customer relationship management system), communication tools, or appointment scheduling
+          </li>
+          <li>With advertising platforms in hashed form, as described in Section 4</li>
           <li>When required by law, regulation, or a valid legal request</li>
           <li>With your consent</li>
         </ul>

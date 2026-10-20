@@ -7,7 +7,7 @@ export default function Terms() {
   const c = C.clinic;
   return (
     <SimplePage>
-      <LegalBody title="Terms & Conditions" updated="October 19, 2026">
+      <LegalBody title="Terms & Conditions" updated="October 20, 2026">
         <p>
           By using this website, you agree to these Terms &amp; Conditions. If you do not agree, please do not use the
           website.
@@ -47,36 +47,42 @@ export default function Terms() {
           change in your condition, medication, or symptoms during treatment.
         </p>
 
-        <h2>6. Fees &amp; Payments</h2>
+        <h2>6. Ratings &amp; Feedback</h2>
+        <p>
+          Ratings and feedback you submit through this website are shared privately with our team to help us improve.
+          Reviews you choose to post on Google are public and are governed by Google&apos;s own terms.
+        </p>
+
+        <h2>7. Fees &amp; Payments</h2>
         <p>Fees for consultations and treatment sessions will be informed by the clinic before treatment begins.</p>
 
-        <h2>7. Intellectual Property</h2>
+        <h2>8. Intellectual Property</h2>
         <p>
           The content, text, images, and logos on this website belong to {c.name} or are used with permission, and may
           not be copied or reused without written consent.
         </p>
 
-        <h2>8. Limitation of Liability</h2>
+        <h2>9. Limitation of Liability</h2>
         <p>
           To the extent permitted by law, {c.name} is not liable for any loss arising from the use of this website or
           reliance on its general information.
         </p>
 
-        <h2>9. Privacy</h2>
+        <h2>10. Privacy</h2>
         <p>
           Your use of this website is also governed by our <a href="/privacy-policy">Privacy Policy</a>.
         </p>
 
-        <h2>10. Governing Law</h2>
+        <h2>11. Governing Law</h2>
         <p>
           These terms are governed by the laws of India. Any disputes are subject to the jurisdiction of the courts in
           Chennai, Tamil Nadu.
         </p>
 
-        <h2>11. Changes to These Terms</h2>
+        <h2>12. Changes to These Terms</h2>
         <p>We may update these terms from time to time. The latest version will always be available on this page.</p>
 
-        <h2>12. Contact Us</h2>
+        <h2>13. Contact Us</h2>
         <p>
           {c.name}, {c.address}
           <br />

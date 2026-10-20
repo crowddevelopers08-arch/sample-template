@@ -1,12 +1,15 @@
+import { CONFIG as C } from "@/lib/siteConfig";
 import { istNow, postToSheet } from "@/lib/sheets";
+import { normalizeIndianPhone, sendToTeleCRM } from "@/lib/telecrm";
 
-// /client-feedback form → Google Apps Script web app (google-apps-script/Code.gs) → "Physiora Feedback" tab.
+// /client-feedback form (1–3 star ratings) → in parallel:
+//  - Google Apps Script web app (google-apps-script/Code.gs) → "Physiora Feedback" tab
+//  - TeleCRM (Lead Request Type "feedback") so the team can call the client back
+// The client sees success if at least one of the two saved it.
+
+const SOURCE = "The Physiora Client Feedback";
 
 export async function POST(req) {
-  if (!process.env.GOOGLE_SHEETS_WEBHOOK_URL) {
-    return Response.json({ error: "Feedback is not configured yet. Please call us directly." }, { status: 500 });
-  }
-
   let body;
   try {
     body = await req.json();
@@ -16,9 +19,10 @@ export async function POST(req) {
 
   const name = String(body.name || "").trim().slice(0, 100);
   const email = String(body.email || "").trim().toLowerCase().slice(0, 150);
-  const phone = String(body.phone || "").replace(/\D/g, "");
+  const phone = normalizeIndianPhone(body.phone);
   const suggestions = String(body.suggestions || "").trim().slice(0, 2000);
-  const rating = Number(body.rating);
+  const ratingNum = Number(body.rating);
+  const rating = Number.isInteger(ratingNum) && ratingNum >= 1 && ratingNum <= 5 ? ratingNum : "";
   const pageUrl = String(body.pageUrl || "").slice(0, 300);
 
   if (body.company) return Response.json({ success: true }); // honeypot: pretend success, store nothing
@@ -31,20 +35,45 @@ export async function POST(req) {
   }
   if (!suggestions) return Response.json({ error: "Please share your suggestions." }, { status: 400 });
 
-  try {
-    await postToSheet({
+  const ratingLabel = rating ? `${rating}/5` : "Not given";
+
+  const [sheet, crm] = await Promise.allSettled([
+    postToSheet({
       action: "feedback",
       timestamp: istNow(),
       name,
       email,
       phone: `+91${phone}`,
-      rating: Number.isInteger(rating) && rating >= 1 && rating <= 5 ? rating : "",
+      rating,
       suggestions,
       pageUrl,
-    });
-    return Response.json({ success: true });
-  } catch (err) {
-    console.error("Feedback webhook failed:", err);
+    }),
+    sendToTeleCRM({
+      name,
+      phone,
+      email,
+      message: `Client feedback (${ratingLabel}) for ${C.clinic.name}: ${suggestions}`,
+      requestType: "feedback",
+      pageName: "physiora-client-feedback",
+      notes: [
+        `Lead Source: ${SOURCE}`,
+        `Live URL: ${pageUrl || "Not provided"}`,
+        `Rating: ${ratingLabel}`,
+        `Feedback: ${suggestions}`,
+        `Email: ${email}`,
+      ],
+    }),
+  ]);
+
+  if (sheet.status === "rejected") console.error("[Google Sheets - Feedback]", sheet.reason);
+  if (crm.status === "rejected") console.error("[TeleCRM - Feedback]", crm.reason);
+
+  if (sheet.status === "rejected" && crm.status === "rejected") {
     return Response.json({ error: "We couldn't submit that right now. Please call us directly." }, { status: 502 });
   }
+  return Response.json({
+    success: true,
+    sheet: sheet.status === "fulfilled" ? "ok" : "failed",
+    crm: crm.status === "fulfilled" ? "ok" : "failed",
+  });
 }
